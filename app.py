@@ -1,5 +1,5 @@
 import requests
-from bs4 import BeautifulSoup
+import BeautifulSoup
 import matplotlib.pyplot as plt
 
 def get_book_data(url):
