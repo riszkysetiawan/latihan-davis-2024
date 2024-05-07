@@ -24,13 +24,13 @@ url = 'https://books.toscrape.com/'
 # Mengambil data judul buku dan harga
 book_titles, book_prices = get_book_data(url)
 
-# Menampilkan data dalam bentuk bar chart
-plt.figure(figsize=(10, 6))
-plt.barh(book_titles, book_prices, color='skyblue')
-plt.xlabel('Harga (£)')
-plt.ylabel('Judul Buku')
-plt.title('Visualisasi Data Buku dan Harga dari https://books.toscrape.com/')
-plt.gca().invert_yaxis()
+# Membuat plot
+fig, ax = plt.subplots(figsize=(10, 6))
+ax.barh(book_titles, book_prices, color='skyblue')
+ax.set_xlabel('Harga (£)')
+ax.set_ylabel('Judul Buku')
+ax.set_title('Visualisasi Data Buku dan Harga dari https://books.toscrape.com/')
+ax.invert_yaxis()
 
 # Menampilkan chart menggunakan Streamlit
-st.pyplot()
+st.pyplot(fig)
