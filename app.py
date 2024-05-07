@@ -1,3 +1,4 @@
+import streamlit as st
 import requests
 from bs4 import BeautifulSoup
 import matplotlib.pyplot as plt
@@ -30,4 +31,6 @@ plt.xlabel('Harga (£)')
 plt.ylabel('Judul Buku')
 plt.title('Visualisasi Data Buku dan Harga dari https://books.toscrape.com/')
 plt.gca().invert_yaxis()
-plt.show()
+
+# Menampilkan chart menggunakan Streamlit
+st.pyplot()
