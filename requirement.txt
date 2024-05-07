@@ -4,4 +4,9 @@ import numpy as np
 import math
 import random
 
+
+import requests
+from bs4 import BeautifulSoup
+import matplotlib.pyplot as plt
+
 st.write('Hi!')
