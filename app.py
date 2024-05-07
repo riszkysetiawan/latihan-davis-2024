@@ -1,6 +1,7 @@
 import streamlit as st
 import requests
 from bs4 import BeautifulSoup
+import pandas as pd
 import matplotlib.pyplot as plt
 
 # Fungsi untuk mengambil data judul buku dan harga
@@ -24,25 +25,19 @@ url = 'https://books.toscrape.com/'
 # Mengambil data judul buku dan harga
 book_titles, book_prices = get_book_data(url)
 
-# Membuat plot
-fig, ax = plt.subplots(figsize=(10, 6))
-ax.barh(book_titles, book_prices, color='skyblue')
-ax.set_xlabel('Harga (£)')
-ax.set_ylabel('Judul Buku')
-ax.set_title('Visualisasi Data Buku dan Harga dari https://books.toscrape.com/')
-ax.invert_yaxis()
+# Membuat plot harga buku
+fig_price, ax_price = plt.subplots(figsize=(10, 6))
+ax_price.barh(book_titles, book_prices, color='skyblue')
+ax_price.set_xlabel('Harga (£)')
+ax_price.set_ylabel('Judul Buku')
+ax_price.set_title('Visualisasi Data Buku dan Harga dari https://books.toscrape.com/')
+ax_price.invert_yaxis()
 
-# Menampilkan chart menggunakan Streamlit
-st.pyplot(fig)
-
-
-import requests
-from bs4 import BeautifulSoup
-import pandas as pd
-import matplotlib.pyplot as plt
+# Menampilkan chart harga menggunakan Streamlit
+st.pyplot(fig_price)
 
 # Fungsi untuk mengambil data judul buku dan rating
-def get_book_data(url):
+def get_book_data_rating(url):
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
     
@@ -56,14 +51,11 @@ def get_book_data(url):
     
     return book_titles, book_ratings
 
-# URL dari website yang akan di-scrape
-url = 'https://books.toscrape.com/'
-
 # Mengambil data judul buku dan rating
-book_titles, book_ratings = get_book_data(url)
+book_titles_rating, book_ratings = get_book_data_rating(url)
 
 # Membuat dataframe dari data yang diambil
-df = pd.DataFrame({'Judul': book_titles, 'Rating': book_ratings})
+df = pd.DataFrame({'Judul': book_titles_rating, 'Rating': book_ratings})
 
 # Mengubah tipe data rating menjadi numerik
 ratings_dict = {'One': 1, 'Two': 2, 'Three': 3, 'Four': 4, 'Five': 5}
@@ -75,11 +67,13 @@ df_sorted = df.sort_values(by='Rating', ascending=False)
 # Mengambil 5 buku terlaris
 top_books = df_sorted.head(5)
 
-# Menampilkan data 5 buku terlaris dalam bentuk bar chart
-plt.figure(figsize=(10, 6))
-plt.barh(top_books['Judul'], top_books['Rating'], color='skyblue')
-plt.xlabel('Rating')
-plt.ylabel('Judul Buku')
-plt.title('5 Buku Terlaris Berdasarkan Rating Tertinggi')
-plt.gca().invert_yaxis()
-plt.show()
+# Membuat plot rating buku
+fig_rating, ax_rating = plt.subplots(figsize=(10, 6))
+ax_rating.barh(top_books['Judul'], top_books['Rating'], color='skyblue')
+ax_rating.set_xlabel('Rating')
+ax_rating.set_ylabel('Judul Buku')
+ax_rating.set_title('5 Buku Terlaris Berdasarkan Rating Tertinggi')
+ax_rating.invert_yaxis()
+
+# Menampilkan chart rating menggunakan Streamlit
+st.pyplot(fig_rating)
