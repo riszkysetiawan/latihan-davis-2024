@@ -77,3 +77,43 @@ ax_rating.invert_yaxis()
 
 # Menampilkan chart rating menggunakan Streamlit
 st.pyplot(fig_rating)
+
+
+
+# Fungsi untuk mengambil data judul buku dan harga
+def get_book_data(url):
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+    
+    # Mengambil judul buku
+    book_titles_tags = soup.find_all('h3')
+    book_titles = [tag.text for tag in book_titles_tags]
+    
+    # Mengambil harga buku
+    book_price_tags = soup.find_all('p', class_='price_color')
+    book_prices = [float(tag.text.replace('Â', '').replace('£', '')) for tag in book_price_tags]
+    
+    return book_titles, book_prices
+
+# URL dari website yang akan di-scrape
+url = 'https://books.toscrape.com/'
+
+# Mengambil data judul buku dan harga
+book_titles, book_prices = get_book_data(url)
+
+# Membuat dataframe dari data yang diambil
+df = pd.DataFrame({'Judul': book_titles, 'Harga (£)': book_prices})
+
+# Menampilkan dataframe menggunakan Streamlit
+st.write(df)
+
+# Membuat scatter plot judul buku vs harga
+fig_scatter, ax_scatter = plt.subplots(figsize=(10, 6))
+ax_scatter.scatter(book_titles, book_prices, color='skyblue')
+ax_scatter.set_xlabel('Judul Buku')
+ax_scatter.set_ylabel('Harga (£)')
+ax_scatter.set_title('Scatter Plot Judul Buku vs Harga dari https://books.toscrape.com/')
+
+# Menampilkan chart scatter plot menggunakan Streamlit
+st.pyplot(fig_scatter)
+
